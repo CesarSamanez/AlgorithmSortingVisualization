@@ -18,14 +18,23 @@ public class BubbleSort extends JPanel {
         JFrame myFrame = new JFrame();
         BubbleSort myBubbleSort = new BubbleSort(size);
 
-        myBubbleSort.fill();
-        if (tipoOrdenamiento == 2) {
-            myBubbleSort.casiOrdenado();
+        if (tipoOrdenamiento == 1) {
+            //Random
+            myBubbleSort.fillShuffle();
+        } else if (tipoOrdenamiento == 2) {
+            //Nearly sorted
+            myBubbleSort.fillNearlySorted();
         } else if (tipoOrdenamiento == 3) {
+            //Reversa
+            myBubbleSort.fillShuffle();
             myBubbleSort.reversa();
+        } else {
+            //Few Unique
+            myBubbleSort.fillRepeatList(data);
         }
+
         myFrame.setTitle("BubbleSort Algorithm");
-        //     myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setSize(1000, 535);
         myFrame.setVisible(true);
         myFrame.setLocationRelativeTo(null);
@@ -34,11 +43,42 @@ public class BubbleSort extends JPanel {
         myBubbleSort.sort();
     }
 
-    public void fill() {
-        Random ran = new Random();
-        for (int x = 0; x < data.length - 1; x++) {
-            data[x] = ran.nextInt(400) + 1;
+    public void fillShuffle() {
+
+        for (int x = 0; x < data.length; x++) {
+            data[x] = (x) * 10 + 1;
+        }
+        shuffle(data);
+    }
+
+    public void shuffle(int[] list) {
+        Random rnd = new Random();
+        int index, aux;
+        for (int i = list.length - 1; i > 0; i--) {
+            index = rnd.nextInt(i + 1);
+            aux = list[index];
+            list[index] = list[i];
+            list[i] = aux;
             repaint();
+        }
+    }
+
+    public void fillNearlySorted() {
+
+        for (int x = 0; x < data.length; x++) {
+            data[x] = (x) * 10 + 1;
+        }
+        shuffleLight(data);
+    }
+
+    private void shuffleLight(int[] list) {
+        Random rnd = new Random();
+        int index, aux, range = 5;
+        for (int i = list.length - 1; i > 0; i -= range) {
+            index = rnd.nextInt(i) + 1;
+            aux = list[index];
+            list[index] = list[index - 1];
+            list[index - 1] = aux;
         }
     }
 
@@ -51,16 +91,15 @@ public class BubbleSort extends JPanel {
         data = auxReversa;
     }
 
-    public void casiOrdenado() {
-        for (int i = 0; i < data.length; i++) {
-            if (i == data.length - 1) {
-                break;
-            }
-            if (i % 5 == 0) {
-                Arrays.sort(data, i, i + 3);
+    private void fillRepeatList(int[] list) {
+        int range = 4;
+        int partial = list.length / range;
+        for (int i = 0; i < range; i++) {
+            int limit = i == range - 1 ? list.length : partial * (i + 1);
+            for (int j = partial * i; j < limit; j++) {
+                list[j] = partial * (i + 1);
             }
         }
-
     }
 
     public void sort() {

@@ -25,15 +25,62 @@ public class QuickSort extends JPanel {
         myFrame.setVisible(true);
         //   myFrame.setLocationRelativeTo(null);
 
-        myQuickSort.fill();
-        if (tipoOrdenamiento == 2) {
-            myQuickSort.casiOrdenado();
+        if (tipoOrdenamiento == 1) {
+            //Random
+            myQuickSort.fillShuffle();
+        } else if (tipoOrdenamiento == 2) {
+            //Nearly sorted
+            myQuickSort.fillNearlySorted();
         } else if (tipoOrdenamiento == 3) {
+            //Reversa
+            myQuickSort.fillShuffle();
             myQuickSort.reversa();
+        } else {
+            //Few Unique
+            myQuickSort.fillRepeatList(data);
         }
         myFrame.add(myQuickSort);
         myQuickSort.sort(myQuickSort.data, 0, myQuickSort.data.length - 1);
         System.out.println("Quick Sort");
+    }
+
+    public void fillShuffle() {
+
+        for (int x = 0; x < data.length; x++) {
+            data[x] = (x) * 10 + 1;
+        }
+        shuffle(data);
+    }
+
+    public void shuffle(int[] list) {
+        Random rnd = new Random();
+        int index, aux;
+        for (int i = list.length - 1; i > 0; i--) {
+            index = rnd.nextInt(i + 1);
+            aux = list[index];
+            list[index] = list[i];
+            list[i] = aux;
+            repaint();
+        }
+    }
+
+    public void fillNearlySorted() {
+
+        for (int x = 0; x < data.length; x++) {
+            data[x] = (x) * 10 + 1;
+        }
+        shuffleLight(data);
+    }
+
+    private void shuffleLight(int[] list) {
+        Random rnd = new Random();
+        int index, aux, range = 5;
+        for (int i = list.length - 1; i > 0; i -= range) {
+            index = rnd.nextInt(i) + 1;
+            aux = list[index];
+            list[index] = list[index - 1];
+            list[index - 1] = aux;
+        }
     }
 
     public void reversa() {
@@ -45,16 +92,15 @@ public class QuickSort extends JPanel {
         data = auxReversa;
     }
 
-    public void casiOrdenado() {
-        for (int i = 0; i < data.length; i++) {
-            if (i == data.length - 1) {
-                break;
-            }
-            if (i % 5 == 0) {
-                Arrays.sort(data, i, i + 3);
+    private void fillRepeatList(int[] list) {
+        int range = 4;
+        int partial = list.length / range;
+        for (int i = 0; i < range; i++) {
+            int limit = i == range - 1 ? list.length : partial * (i + 1);
+            for (int j = partial * i; j < limit; j++) {
+                list[j] = partial * (i + 1);
             }
         }
-
     }
 
     public int partition(int arr[], int low, int high) {
@@ -97,14 +143,6 @@ public class QuickSort extends JPanel {
 
         repaint();
         return i + 1;
-    }
-
-    public void fill() {
-        Random ran = new Random();
-        for (int x = 0; x < data.length - 1; x++) {
-            data[x] = ran.nextInt(400) + 1;
-            repaint();
-        }
     }
 
     public void paintComponent(Graphics g) {

@@ -24,15 +24,62 @@ public class MergeSort extends JPanel {
         myFrame.setVisible(true);
         //     myFrame.setLocationRelativeTo(null);
 
-        myClass.fill();
-        if (tipoOrdenamiento == 2) {
-            myClass.casiOrdenado();
+        if (tipoOrdenamiento == 1) {
+            //Random
+            myClass.fillShuffle();
+        } else if (tipoOrdenamiento == 2) {
+            //Nearly sorted
+            myClass.fillNearlySorted();
         } else if (tipoOrdenamiento == 3) {
+            //Reversa
+            myClass.fillShuffle();
             myClass.reversa();
+        } else {
+            //Few Unique
+            myClass.fillRepeatList(data);
         }
         myFrame.add(myClass);
         myClass.mergesort(myClass.data);
         System.out.println("Merge Sort");
+    }
+
+    public void fillShuffle() {
+
+        for (int x = 0; x < data.length; x++) {
+            data[x] = (x) * 10 + 1;
+        }
+        shuffle(data);
+    }
+
+    public void shuffle(int[] list) {
+        Random rnd = new Random();
+        int index, aux;
+        for (int i = list.length - 1; i > 0; i--) {
+            index = rnd.nextInt(i + 1);
+            aux = list[index];
+            list[index] = list[i];
+            list[i] = aux;
+            repaint();
+        }
+    }
+
+    public void fillNearlySorted() {
+
+        for (int x = 0; x < data.length; x++) {
+            data[x] = (x) * 10 + 1;
+        }
+        shuffleLight(data);
+    }
+
+    private void shuffleLight(int[] list) {
+        Random rnd = new Random();
+        int index, aux, range = 5;
+        for (int i = list.length - 1; i > 0; i -= range) {
+            index = rnd.nextInt(i) + 1;
+            aux = list[index];
+            list[index] = list[index - 1];
+            list[index - 1] = aux;
+        }
     }
 
     public void reversa() {
@@ -44,16 +91,15 @@ public class MergeSort extends JPanel {
         data = auxReversa;
     }
 
-    public void casiOrdenado() {
-        for (int i = 0; i < data.length; i++) {
-            if (i == data.length - 1) {
-                break;
-            }
-            if (i % 5 == 0) {
-                Arrays.sort(data, i, i + 3);
+    private void fillRepeatList(int[] list) {
+        int range = 4;
+        int partial = list.length / range;
+        for (int i = 0; i < range; i++) {
+            int limit = i == range - 1 ? list.length : partial * (i + 1);
+            for (int j = partial * i; j < limit; j++) {
+                list[j] = partial * (i + 1);
             }
         }
-
     }
 
     public int[] mergesort(int[] data) {
@@ -148,13 +194,6 @@ public class MergeSort extends JPanel {
         }
         return data;
 
-    }
-
-    public void fill() {
-        for (int x = 0; x < data.length - 1; x++) {
-            data[x] = (int) (Math.random() * 500) + 1;
-            repaint();
-        }
     }
 
     public void paintComponent(Graphics g) {
