@@ -1,10 +1,8 @@
 
 public class Hilo extends Thread {
-
     Thread thread;
     String algoritmo = "";
-    int tipoOrdenamiento;
-    int size;
+    int tipoOrdenamiento,size;
 
     public Hilo(String algoritmo, int tipoOrdenamiento, int size) {
         this.size = size;
@@ -12,11 +10,7 @@ public class Hilo extends Thread {
         this.tipoOrdenamiento = tipoOrdenamiento;
         thread = new Thread(this, algoritmo);
     }
-
-    public void run() {
-        elige();
-    }
-
+    public void run() { elige(); }
     public void elige() {
         if (algoritmo.equalsIgnoreCase("BubbleSort")) {
             BubbleSort myBubble = new BubbleSort(size);
@@ -41,5 +35,4 @@ public class Hilo extends Thread {
             myShellSort.run(tipoOrdenamiento, size);
         }
     }
-    
 }

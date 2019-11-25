@@ -20,13 +20,13 @@ public class BubbleSort extends JPanel {
 
         if (tipoOrdenamiento == 1) {
             //Random
-            myBubbleSort.fillShuffle();
+            myBubbleSort.Random();
         } else if (tipoOrdenamiento == 2) {
             //Nearly sorted
-            myBubbleSort.fillNearlySorted();
+            myBubbleSort.casiOrdenado();
         } else if (tipoOrdenamiento == 3) {
             //Reversa
-            myBubbleSort.fillShuffle();
+            myBubbleSort.Random();
             myBubbleSort.reversa();
         } else {
             //Few Unique
@@ -43,8 +43,7 @@ public class BubbleSort extends JPanel {
         myBubbleSort.sort();
     }
 
-    public void fillShuffle() {
-
+    public void Random() {
         for (int x = 0; x < data.length; x++) {
             data[x] = (x) * 10 + 1;
         }
@@ -63,12 +62,21 @@ public class BubbleSort extends JPanel {
         }
     }
 
-    public void fillNearlySorted() {
+    public void casiOrdenado() {
 
         for (int x = 0; x < data.length; x++) {
             data[x] = (x) * 10 + 1;
         }
         shuffleLight(data);
+    }
+
+    public void reversa() {
+        Arrays.sort(data);
+        int[] auxReversa = new int[data.length];
+        for (int i = 0; i < data.length; i++) {
+            auxReversa[i] = data[data.length - i - 1];
+        }
+        data = auxReversa;
     }
 
     private void shuffleLight(int[] list) {
@@ -80,15 +88,6 @@ public class BubbleSort extends JPanel {
             list[index] = list[index - 1];
             list[index - 1] = aux;
         }
-    }
-
-    public void reversa() {
-        Arrays.sort(data);
-        int[] auxReversa = new int[data.length];
-        for (int i = 0; i < data.length; i++) {
-            auxReversa[i] = data[data.length - i - 1];
-        }
-        data = auxReversa;
     }
 
     private void fillRepeatList(int[] list) {
